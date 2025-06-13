@@ -8,8 +8,8 @@ pipeline {
     environment {
         SCANNER_HOME = tool 'sonar-scanner'
         SONAR_TOKEN = credentials('sonar-token')
-        SONAR_ORGANIZATION = 'jenkins-project-123'
-        SONAR_PROJECT_KEY = 'jenkins-project-123_ci-jenkins'
+        SONAR_ORGANIZATION = 'jenkins-devops-tj'
+        SONAR_PROJECT_KEY = 'jenkins-devops-tj_ci-jenkins'
     }
 
     stages {
@@ -18,10 +18,11 @@ pipeline {
             steps {
                 withSonarQubeEnv('SonarCloud') {
                     sh '''$SCANNER_HOME/bin/sonar-scanner \
-  -Dsonar.organization=jenkins-project-123 \
-  -Dsonar.projectKey=jenkins-project-123_ci-jenkins \
+  -Dsonar.organization=jenkins-devops-tj \
+  -Dsonar.projectKey=jenkins-devops-tj_ci-jenkins \
   -Dsonar.sources=. \
   -Dsonar.host.url=https://sonarcloud.io '''
+  -Dsonar.login=$SONAR_TOKEN'''
                 }
             }
         }
@@ -33,7 +34,7 @@ pipeline {
                 script {
                     docker.withRegistry('', 'docker-cred') {
                         def buildNumber = env.BUILD_NUMBER ?: '1'
-                        def image = docker.build("pekker123/crud-123:latest")
+                        def image = docker.build("tjkapil0/tjkapil0:latest")
                         image.push()
                     }
                 }
@@ -45,7 +46,7 @@ pipeline {
             steps {
                 script {
                         sh 'docker rm -f $(docker ps -q) || true'
-                        sh 'docker run -d -p 3000:3000 pekker123/crud-123:latest'
+                        sh 'docker run -d -p 3000:3000 tjkapil0/tjkapil0:latest'
                         
                     
                 }
