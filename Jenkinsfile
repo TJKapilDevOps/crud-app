@@ -1,9 +1,5 @@
-
-
-
 pipeline {
     agent any
-    
 
     environment {
         SCANNER_HOME = tool 'sonar-scanner'
@@ -13,7 +9,6 @@ pipeline {
     }
 
     stages {
-        
         stage('Code-Analysis') {
             steps {
                 withSonarQubeEnv('SonarCloud') {
@@ -26,10 +21,8 @@ pipeline {
                 }
             }
         }
-       
-        
-      
-       stage('Docker Build And Push') {
+
+        stage('Docker Build And Push') {
             steps {
                 script {
                     docker.withRegistry('', 'docker-cred') {
@@ -40,18 +33,14 @@ pipeline {
                 }
             }
         }
-    
-       
+
         stage('Deploy To EC2') {
             steps {
                 script {
-                        sh 'docker rm -f $(docker ps -q) || true'
-                        sh 'docker run -d -p 3000:3000 tjkapil0/tjkapil0:latest'
-                        
-                    
+                    sh 'docker rm -f $(docker ps -q) || true'
+                    sh 'docker run -d -p 3000:3000 tjkapil0/tjkapil0:latest'
                 }
             }
         }
-        
-}
+    }
 }
