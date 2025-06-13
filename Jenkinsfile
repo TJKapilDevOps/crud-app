@@ -21,7 +21,7 @@ pipeline {
   -Dsonar.organization=jenkins-devops-tj \
   -Dsonar.projectKey=jenkins-devops-tj_ci-jenkins \
   -Dsonar.sources=. \
-  -Dsonar.host.url=https://sonarcloud.io '''
+  -Dsonar.host.url=https://sonarcloud.io \
   -Dsonar.login=$SONAR_TOKEN'''
                 }
             }
